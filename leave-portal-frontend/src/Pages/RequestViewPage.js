@@ -9,6 +9,7 @@ import Loading from '../Components/Loading';
 import MessageSnackBar from '../Components/MessageSnackBar';
 
 const useremail=localStorage.getItem('email');
+const role=localStorage.getItem('role');
 
 function RequestViewPage(props) {
   const [open, setOpen] = useState(false);
@@ -25,7 +26,7 @@ function RequestViewPage(props) {
       setIsLoading(true);
 
       try{
-        const response=await getLeaveRequestList(useremail, currPage);
+        const response=await getLeaveRequestList(useremail, role, currPage);
         console.log(response);
         if(response.result){
           setPageCount(response.pageCount);

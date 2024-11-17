@@ -35,11 +35,12 @@ export const applyLeave=async (data)=>{
     return response;
 }
 
-export const getLeaveRequestList=async (email, page)=>{
+export const getLeaveRequestList=async (email, role, page)=>{
 
     const url=BACKEND_URL+`get-leave-requests/${page}`;
     const body={
-        "useremail": email
+        "useremail": email,
+        "role": role,
     }
 
     const response=await fetchCall(url, 'POST', body);

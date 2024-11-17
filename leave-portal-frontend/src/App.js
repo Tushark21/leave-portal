@@ -6,8 +6,7 @@ import LeaveRequestPage from './Pages/LeaveRequestPage';
 import Error from './Pages/Error';
 
 function App() {
-  localStorage.setItem('role', 'employee');
-  localStorage.setItem('email', 'karkare@gmail.com');
+  const role=localStorage.getItem('role');
 
   return (
     <div className="App">
@@ -18,8 +17,8 @@ function App() {
           <Routes>
             <Route exact path="/login" element={<RequestViewPage />} />
             <Route exact path="/" element={<Navigate to="/login" />} />
-            <Route exact path="requests" element={<RequestViewPage />} />
-            <Route exact path="apply-leave" element={<LeaveRequestPage />} />
+            <Route exact path="/requests" element={<RequestViewPage />} />
+            <Route exact path="/apply-leave" element={role==='employee' ? <LeaveRequestPage /> : <Navigate to="/requests" />} />
             <Route path="*" element={<Error />} />
           </Routes>
         </div>

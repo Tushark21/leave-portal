@@ -1,13 +1,26 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
-
-const role=localStorage.getItem('role');
+import { reloadPage } from "../Utility/utility";
 
 function Header() {
+  const role=localStorage.getItem('role') || 'employee';
   const navigate = useNavigate();
 
   const navigatePage=(path)=>{
     navigate(path);
+  }
+
+  const logout=()=>{
+    if(role==='employee'){
+      localStorage.setItem('role', 'supervisor');
+      localStorage.setItem('email', 'karkare@gmail.com');
+    }
+    else{
+      localStorage.setItem('role', 'employee');
+      localStorage.setItem('email', 'ashish@gmail.com');
+    }
+
+    reloadPage();
   }
 
   return (
@@ -22,8 +35,10 @@ function Header() {
           {role==='employee' && <Button variant="contained" onClick={()=>navigatePage('./apply-leave')} >Apply Leave</Button>}
         </div>
 
-        <Button variant="contained">LogOut</Button>
+        <Button variant="contained" onClick={()=>logout()} >LogOut</Button>
       </div>
+
+      <h3>{role}</h3>
     </div>
   );
 }

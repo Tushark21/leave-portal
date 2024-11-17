@@ -50,11 +50,10 @@ app.post("/apply-leave", async(req, res)=>{
 app.post("/get-leave-requests/:page", async (req, res)=>{
     console.log("POST: /get-leave-requests/:page");
 
-    const { useremail }=req.body;
+    const { role, useremail }=req.body;
     const page=parseInt(req.params.page);
-    console.log("ERR", useremail, page);
 
-    if(!validate(useremail) || isNaN(page)){
+    if(!validate(role) || !validateEmail(useremail) || isNaN(page)){
 
         console.error("Invalid Data");
         res.status(400);
@@ -65,12 +64,12 @@ app.post("/get-leave-requests/:page", async (req, res)=>{
     }
 
     try{
-        const countQuery=`SELECT COUNT(*) FROM leaverequests WHERE supervisoremail = ?`;
+        const countQuery=`SELECT COUNT(*) FROM leaverequests WHERE ${role}email = ?`;
         const data=[useremail];
         const countQueryResult = await selectAll(countQuery, data);
         const count=countQueryResult.result[0]['COUNT(*)'];
 
-        const query=`SELECT * FROM leaverequests WHERE supervisoremail = ? ORDER BY applieddate DESC LIMIT ${ITEMS_PER_PAGE} OFFSET ${(page-1)*ITEMS_PER_PAGE}`;
+        const query=`SELECT * FROM leaverequests WHERE ${role}email = ? ORDER BY applieddate DESC LIMIT ${ITEMS_PER_PAGE} OFFSET ${(page-1)*ITEMS_PER_PAGE}`;
         let result = await selectAll(query, data);
         result.pageCount=Math.ceil(count/ITEMS_PER_PAGE);
         
